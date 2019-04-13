@@ -15,7 +15,7 @@ To find the documentation, go to Wiki of this repository.
 
 ## FAQ
 
-Click  [here](#) to access the FAQ.
+Click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki/FAQ) to access the FAQ.
 
 ## How to contribute
 
