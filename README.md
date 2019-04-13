@@ -7,7 +7,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.convertertopdf/convertertopdf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.convertertopdf/convertertopdf)
 [![Javadocs](http://javadoc.io/badge/org.convertertopdf/convertertopdf.svg)](http://javadoc.io/doc/org.convertertopdf/convertertopdf)
 
-ConverterToPdf is a component which converts some kinds of files to PDF.
+ConverterToPdf is a component which converts some kinds of files to PDF. It is a fluent API that provides an easy way to convert files to PDF. The conversion complexity of each file type is abstracted to specific converters, which facilitate the process. In addition, some facilities for converting these types of files are available. 
 
 ## Docs
 
