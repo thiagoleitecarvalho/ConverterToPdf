@@ -17,6 +17,8 @@ To find the documentation, go to Wiki of this repository.
 
 Click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki/FAQ) to access the FAQ.
 
+<!--
 ## How to contribute
 
 Fork this repository on GitHub, make yours updates, do a pull request, and wait until it gets merged and published.
+-->
