@@ -11,7 +11,7 @@ ConverterToPdf is a component which converts some kinds of files to PDF. It is a
 
 ## Docs
 
-To find the documentation, go to Wiki of this repository.
+To find the User Guide, click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki). The Java Docs, is available in [ConverterToPdf Docs](#).
 
 ## FAQ
 
