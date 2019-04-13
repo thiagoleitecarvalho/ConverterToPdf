@@ -8,7 +8,7 @@ To find the documentation, go to Wiki of this repository.
 
 ## FAQ
 
-Click here to access the FAQ.
+Click  [HERE](#) to access the FAQ.
 
 ## How to contribute
 
