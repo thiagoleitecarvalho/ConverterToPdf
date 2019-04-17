@@ -17,6 +17,10 @@ To find the User Guide, click [here](https://github.com/thiagoleitecarvalho/Conv
 
 Click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki/FAQ) to access the FAQ.
 
+## Contact
+
+If you want contact me, send e-mail to thiagoleiteecarvalho@gmail.com
+
 <!--
 ## How to contribute
 
