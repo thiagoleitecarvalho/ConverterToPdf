@@ -21,7 +21,7 @@ Click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki/FAQ) to 
 
 If you want contact me, send e-mail to thiagoleiteecarvalho@gmail.com
 
-Please, in the subject writes "ConverterToPdf: <doubt/sugestion/tip>".
+Please, in the subject write "ConverterToPdf: <doubt/sugestion/tip>".
 
 Thanks!
 
