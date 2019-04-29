@@ -19,9 +19,7 @@ Click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki/FAQ) to 
 
 ## Contact
 
-If you want contact me, send e-mail to thiagoleiteecarvalho@gmail.com
-
-Please, in the subject write "ConverterToPdf: <doubt/sugestion/tip>".
+If you want contact me, send e-mail to thiagoleiteecarvalho@gmail.com. Please, in the subject write "ConverterToPdf: <doubt/sugestion/tip>".
 
 If you want connect to me, my LinkedIn profile is https://br.linkedin.com/in/thiago-leite-e-carvalho-1b337b127
 
