@@ -11,7 +11,7 @@ ConverterToPdf is a Java component 100% free, which converts some kinds of files
 
 ## Docs
 
-To find the User Guide, click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki). The Java Docs, is available in [ConverterToPdf Docs](#).
+To find the User Guide, click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki). The Java Docs, is available in [ConverterToPdf Docs](javadoc.io/doc/org.convertertopdf/convertertopdf).
 
 ## FAQ
 
