@@ -7,6 +7,30 @@
 	<version>1.0.0</version>
  	<packaging>jar</packaging>
 	 	
+	<build>
+	        <plugins>
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-compiler-plugin</artifactId>
+	                <configuration>
+	                    <source>1.8</source>
+	                    <target>1.8</target>
+	                </configuration>
+	            </plugin>
+	            <plugin>
+	                <groupId>org.sonatype.plugins</groupId>
+	                <artifactId>nexus-staging-maven-plugin</artifactId>
+	                <version>1.6.7</version>
+	                <extensions>true</extensions>
+	                <configuration>
+	                    <serverId>ossrh</serverId>
+	                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+	                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+	                </configuration>
+				</plugin>
+		</plugins>
+	</build>
+	 	
 	<name>ConverterToPdf</name>
 	<description>A component 100% free, which convert several file formats to PDF</description>
 	<url>https://github.com/thiagoleitecarvalho/ConverterToPdf</url> 	
@@ -29,13 +53,11 @@
   
 	<scm>
 	    <url>https://github.com/thiagoleitecarvalho/ConverterToPdf</url>
-	    <connection>scm:git:git@github.com:thiagoleitecarvalho/ConverterToPdf.git</connection>
-	    <developerConnection>scm:git:git@github.com:thiagoleitecarvalho/ConverterToPdf.git</developerConnection>
+	    <connection>scm:git:git://github.com/thiagoleitecarvalho/ConverterToPdf.git</connection>
+	    <developerConnection>scm:git:ssh://github.com:thiagoleitecarvalho/ConverterToPdf.git</developerConnection>
   	</scm>
-
+  	
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.5</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>  
