@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+    "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+    "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+
+<suppressions>
+    <suppress checks="." files="[\\\/]br[\\/]gov[\\/]pgfn[\\/]saj[\\/]integra[\\/]auditoria[\\/].*_\.java"/>
+    <suppress checks="." files="[\\\/]br[\\/]gov[\\/]pgfn[\\/]saj[\\/]integra[\\/]model[\\/].*_\.java"/>
+    <suppress checks="." files="[\\\/]br[\\\/]gov[\\\/]pgfn[\\\/]saj[\\\/]integra[\\\/]auditoria[\\\/](.+[\\\/])*Q[A-Z].*\.java"/>
+    <suppress checks="." files="[\\\/]br[\\\/]gov[\\\/]pgfn[\\\/]saj[\\\/]integra[\\\/]model[\\\/](.+[\\\/])*Q[A-Z].*\.java"/>
+    <suppress checks="[a-zA-Z0-9]*" files="[\\\/]target[\\/]generated-sources[\\/]" />
+</suppressions>
