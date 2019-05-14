@@ -1,8 +1,0 @@
-org.convertertopdf.configuration
-org.convertertopdf.configuration.implementation
-org.convertertopdf.convert
-org.convertertopdf.convert.implementation
-org.convertertopdf.exception
-org.convertertopdf.management
-org.convertertopdf.util
-org.convertertopdf.validation
