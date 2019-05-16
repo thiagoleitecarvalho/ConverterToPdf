@@ -4,14 +4,14 @@
 [![Coverage Status](https://coveralls.io/repos/github/thiagoleitecarvalho/ConverterToPdf/badge.svg?branch=master)](https://coveralls.io/github/thiagoleitecarvalho/ConverterToPdf?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a5cd546d81e14cfaaec538707a7aa62c)](https://www.codacy.com/app/thiagoleitecarvalho/ConverterToPdf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=thiagoleitecarvalho/ConverterToPdf&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.convertertopdf/convertertopdf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.convertertopdf/convertertopdf)
-[![Javadocs](http://javadoc.io/badge/org.convertertopdf/convertertopdf.svg)](http://javadoc.io/doc/org.convertertopdf/convertertopdf)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.thiagoleitecarvalho/convertertopdf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.thiagoleitecarvalho/convertertopdf)
+[![Javadocs](http://javadoc.io/badge/org.convertertopdf/convertertopdf.svg)](http://javadoc.io/doc/com.github.thiagoleitecarvalho/convertertopdf)
 
 ConverterToPdf is a Java component 100% free, which converts some kinds of files to PDF. It is a fluent API that provides an easy way to convert files to PDF. The conversion complexity of each file type is abstracted to specific converters, which facilitate the process. In addition, some facilities for converting these types of files are available. 
 
 ## Docs
 
-To find the User Guide, click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki). The Java Docs, is available in [ConverterToPdf Docs](http://javadoc.io/doc/org.convertertopdf/convertertopdf).
+To find the User Guide, click [here](https://github.com/thiagoleitecarvalho/ConverterToPdf/wiki). The Java Docs, is available in [ConverterToPdf Docs](http://javadoc.io/doc/com.github.thiagoleitecarvalho/convertertopdf).
 
 ## FAQ
 
