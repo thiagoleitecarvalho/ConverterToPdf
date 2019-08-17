@@ -8,6 +8,8 @@ addons:
 sudo: required
 
 before_install: 
+  - sudo add-apt-repository ppa:webupd8team/java
+  - sudo apt-get update
   - sudo add-apt-repository ppa:libreoffice/ppa -y
   - sudo apt-get update
   - sudo apt-get install libreoffice
