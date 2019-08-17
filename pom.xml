@@ -47,7 +47,7 @@
 				</executions>
 			    <configuration>
 			        <excludes>
-			            <exclude>**/*Test.java</exclude>
+			            <exclude>**/*Test</exclude>
 			        </excludes>
 			    </configuration>				
 			</plugin>
