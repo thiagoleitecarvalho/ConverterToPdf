@@ -1,4 +1,6 @@
 language: java
 
+sudo: required
+
 before_install: 
 	- sudo apt-get install libreoffice-core libreoffice-headless libreoffice-sdk libreoffice-writer2latex libreoffice-writer2xhtml libreoffice-pyuno
