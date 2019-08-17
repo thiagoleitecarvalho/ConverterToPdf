@@ -6,6 +6,7 @@
 	<groupId>com.github.thiagoleitecarvalho</groupId>
 	<artifactId>convertertopdf</artifactId>
 	<version>1.0.0</version>
+    <packaging>jar</packaging>	
 	<build>
 		<plugins>
 			<plugin>
@@ -47,7 +48,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<packaging>jar</packaging>
 
 	<name>ConverterToPdf</name>
 	<description>A component 100% free, which convert several file formats to PDF</description>

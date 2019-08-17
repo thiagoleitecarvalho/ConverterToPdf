@@ -8,9 +8,9 @@ jdk:
 sudo: required
 
 before_install: 
-  - sudo add-apt-repository ppa:libreoffice/ppa -y
-  - sudo apt-get update
-  - sudo apt-get install libreoffice
+- sudo add-apt-repository ppa:libreoffice/ppa -y
+- sudo apt-get update
+- sudo apt-get install libreoffice
   
 after_success: 
-  -	mvn clean test jacoco:report coveralls:report
+- mvn clean test jacoco:report coveralls:report
