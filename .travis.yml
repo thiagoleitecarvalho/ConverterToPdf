@@ -12,8 +12,5 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install libreoffice
   
- script: 
- 	"sbt clean coverage test"
-
 after_success: 
-	mvn clean cobertura:cobertura coveralls:report
+	mvn clean test jacoco:report coveralls:report
