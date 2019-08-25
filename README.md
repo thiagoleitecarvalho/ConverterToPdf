@@ -6,6 +6,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.thiagoleitecarvalho/convertertopdf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.thiagoleitecarvalho/convertertopdf)
 [![Javadocs](http://javadoc.io/badge/com.github.thiagoleitecarvalho/convertertopdf.svg)](http://javadoc.io/doc/com.github.thiagoleitecarvalho/convertertopdf)
+[![Gitter](https://badges.gitter.im/ConverterToPdf-Chat/community.svg)](https://gitter.im/ConverterToPdf-Chat/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ConverterToPdf is a Java component 100% free, which converts some kinds of files to PDF. It is a fluent API that provides an easy way to convert files to PDF. The conversion complexity of each file type is abstracted to specific converters, which facilitate the process. In addition, some facilities for converting these types of files are available. 
 
