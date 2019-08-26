@@ -24,6 +24,8 @@ If you want contact me, send e-mail to thiagoleiteecarvalho@gmail.com. Please, i
 If you want connect to me, my LinkedIn profile is https://br.linkedin.com/in/thiago-leite-e-carvalho-1b337b127
 
 Thanks!
+
+Special thanks to my friend Fabio for helping me when I needed it.
 <!--
 ## How to contribute
 
