@@ -25,7 +25,10 @@ If you want connect to me, my LinkedIn profile is https://br.linkedin.com/in/thi
 
 Thanks!
 
+## Thanks
+
 Special thanks to my friend Fabio for helping me when I needed it.
+
 <!--
 ## How to contribute
 
