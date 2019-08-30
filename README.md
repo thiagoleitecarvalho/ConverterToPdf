@@ -27,7 +27,7 @@ Thanks!
 
 ## Thanks
 
-Special thanks to my friend Fabio for helping me when I needed it.
+Special thanks to my friend Fabio for the help. Thanks too @sbraconnier by the help with your component JODConverter[https://github.com/sbraconnier/jodconverter]
 
 <!--
 ## How to contribute
