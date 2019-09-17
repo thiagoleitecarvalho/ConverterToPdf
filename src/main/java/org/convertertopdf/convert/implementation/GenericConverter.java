@@ -43,12 +43,12 @@ public final class GenericConverter {
 	/**
 	 * File(s) source.
 	 */
-	protected File[] file;
+	private File[] file;
 	
 	/**
 	 * Pdf destiny.
 	 */
-	protected OutputStream out;
+	private OutputStream out;
 	
 	/**
 	 * Sets the source by file, that will be converted to desired format.
