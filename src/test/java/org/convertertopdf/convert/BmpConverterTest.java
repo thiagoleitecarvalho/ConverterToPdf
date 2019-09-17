@@ -3,6 +3,7 @@ package org.convertertopdf.convert;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
@@ -15,110 +16,166 @@ import org.convertertopdf.exception.PdfConverterException;
 import org.convertertopdf.management.ConverterManager;
 import org.convertertopdf.util.EFormat;
 import org.convertertopdf.util.EOrientation;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class BmpConverterTest extends BaseConverterTest {
 
-	private ConverterManager converterManager;
-
 	private String file;
 
 	@Before
 	public void init() {
-		converterManager = new ConverterManager();
 		file = "file1.bmp";
 	}
 
+	@AfterClass
+	public static void cleanFiles() {
+		FileUtils.deleteQuietly(new File(SRC_TEST_RESOURCES + "fileBMPConverted1.pdf"));
+		FileUtils.deleteQuietly(new File(SRC_TEST_RESOURCES + "fileBMPConverted2.pdf"));
+		FileUtils.deleteQuietly(new File(SRC_TEST_RESOURCES + "fileBMPConverted3.pdf"));
+		FileUtils.deleteQuietly(new File(SRC_TEST_RESOURCES + "fileBMPConverted4.pdf"));
+		FileUtils.deleteQuietly(new File(SRC_TEST_RESOURCES + "fileBMPConverted5.pdf"));
+		FileUtils.deleteQuietly(new File(SRC_TEST_RESOURCES + "fileBMPConverted6.pdf"));
+		FileUtils.deleteQuietly(new File(SRC_TEST_RESOURCES + "fileBMPConverted7.pdf"));
+	}
+	
 	@Test
 	public void getFormat() {
 
-		BmpConverter converterFor = (BmpConverter) converterManager.createFor(EFormat.BMP);
+		BmpConverter converterFor = (BmpConverter) ConverterManager.createConverterFor(EFormat.BMP);
 
 		assertEquals(EFormat.BMP, converterFor.getFormat());
 	}
 
 	@Test
 	public void convertByFile()
-			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException {
+			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException, FileNotFoundException {
 
-		File source = getResourceAsFile("file2.bmp");
+		ConverterManager
+			.createConverterFor(EFormat.BMP)
+			.from(getSource("file2.bmp"))
+			.to(createFileDestiny("fileBMPConverted1.pdf"))
+			.validade()
+			.convert();
 
-		byte[] result = converterManager.createFor(EFormat.BMP).setFile(source).validade().convert();
-
-		Assert.assertNotNull(result);
+		Assert.assertFalse(fileCorrupted("fileBMPConverted1.pdf"));
 	}
+	
+	@Test
+	public void convertByFiles()
+			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException, FileNotFoundException {
+
+		ConverterManager
+			.createConverterFor(EFormat.BMP)
+			.from(getSource("file2.bmp"), getSource(file))
+			.to(createFileDestiny("fileBMPConverted6.pdf"))
+			.validade()
+			.convert();
+
+		Assert.assertFalse(fileCorrupted("fileBMPConverted6.pdf"));
+	}	
 
 	@Test
 	public void convertByBytes() throws PdfConverterException, FileValidationException, FileFormatException,
 			FileNotInformedException, IOException {
 
-		File source = getResourceAsFile(file);
+		byte[] bytes = FileUtils.readFileToByteArray(getSource(file));
 
-		byte[] bytes = FileUtils.readFileToByteArray(source);
+		ConverterManager
+			.createConverterFor(EFormat.BMP)
+			.from(bytes)
+			.to(createFileDestiny("fileBMPConverted2.pdf"))
+			.validade()
+			.convert();
 
-		byte[] result = converterManager.createFor(EFormat.BMP).setFile(bytes).validade().convert();
-
-		Assert.assertNotNull(result);
+		Assert.assertFalse(fileCorrupted("fileBMPConverted2.pdf"));
 	}
 
 	@Test(expected = FileFormatException.class)
 	public void convertFileFormatExceptionByFile()
-			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException {
+			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException, FileNotFoundException {
 
-		File source = getResourceAsFile("file.txt");
-
-		converterManager.createFor(EFormat.BMP).setFile(source).validade().convert();
+		ConverterManager
+			.createConverterFor(EFormat.BMP)
+			.from(getSource("file.txt"))
+			.to(createFileDestiny("fileBMPConverted3.pdf"))
+			.validade()
+			.convert();
 	}
 
 	@Test(expected = FileFormatException.class)
 	public void convertFileFormatExceptionByBytes() throws PdfConverterException, FileValidationException,
 			FileFormatException, FileNotInformedException, IOException {
 
-		File source = getResourceAsFile("file.txt");
+		byte[] bytes = FileUtils.readFileToByteArray(getSource("file.txt"));
 
-		byte[] bytes = FileUtils.readFileToByteArray(source);
-
-		converterManager.createFor(EFormat.BMP).setFile(bytes).validade().convert();
+		ConverterManager
+			.createConverterFor(EFormat.BMP)
+			.from(bytes)
+			.to(createFileDestiny("fileBMPConverted4.pdf"))
+			.validade()
+			.convert();
 	}
 
 	@Test(expected = FileValidationException.class)
 	public void convertFileValidationException()
-			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException {
+			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException, FileNotFoundException {
 
-		File source = getResourceAsFile(file);
-
-		converterManager.createFor(EFormat.BMP).setFile(source).convert();
+		ConverterManager
+			.createConverterFor(EFormat.BMP)
+			.from(getSource(file))
+			.to(createFileDestiny("fileBMPConverted5.pdf"))
+			.convert();
 	}
 
 	@Test(expected = FileNotInformedException.class)
-	public void convertFileNotInformedException()
-			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException {
+	public void convertFileNotInformedExceptionSource()
+			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException, FileNotFoundException {
 
-		converterManager.createFor(EFormat.BMP).validade().convert();
+		ConverterManager
+			.createConverterFor(EFormat.BMP)
+			.to(createFileDestiny("fileBMPConverted6.pdf"))
+			.validade()
+			.convert();
 	}
 
+	@Test(expected = FileNotInformedException.class)
+	public void convertFileNotInformedExceptionDestiny()
+			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException {
+
+		ConverterManager
+			.createConverterFor(EFormat.BMP)
+			.from(getSource("file2.bmp"))
+			.validade()
+			.convert();
+	}
+	
 	@Test
 	public void convertByFilePortrait()
 			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException {
 
-		BmpConverter bmpConverter = (BmpConverter) converterManager.createFor(EFormat.BMP);
+		BmpConverter bmpConverter = (BmpConverter) ConverterManager.createConverterFor(EFormat.BMP);
 		Assert.assertTrue(bmpConverter.getConfigurations().isPortrait());
 	}
 
 	@Test
 	public void convertByFileLandscape()
-			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException {
-
-		File source = getResourceAsFile(file);
+			throws PdfConverterException, FileValidationException, FileFormatException, FileNotInformedException, FileNotFoundException {
 
 		TxtImageConfiguration configuration = new TxtImageConfiguration();
 		configuration.setOrientation(EOrientation.LANDSCAPE);
 
-		BmpConverter bmpConverter = (BmpConverter) converterManager.createFor(EFormat.BMP);
-		bmpConverter.setFile(source).setConfigurations(configuration).validade().convert();
+		BmpConverter bmpConverter = (BmpConverter) ConverterManager.createConverterFor(EFormat.BMP);
+		bmpConverter
+			.from(getSource(file))
+			.to(createFileDestiny("fileBMPConverted7.pdf"))
+			.setConfigurations(configuration)
+			.validade();
 
 		Assert.assertFalse(bmpConverter.getConfigurations().isPortrait());
+		
+		bmpConverter.convert();
 	}
 }

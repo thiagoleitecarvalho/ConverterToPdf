@@ -1,13 +1,6 @@
 package org.convertertopdf.convert.implementation;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.ExceptionConverter;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfWriter;
-
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -19,7 +12,14 @@ import org.apache.commons.io.FileUtils;
 import org.convertertopdf.convert.SimpleFileConverter;
 import org.convertertopdf.exception.FileValidationException;
 import org.convertertopdf.exception.PdfConverterException;
+import org.convertertopdf.management.ConverterFactory;
 import org.convertertopdf.util.EFormat;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.ExceptionConverter;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * Class responsable to convert TXT files to PDF.
@@ -28,17 +28,24 @@ import org.convertertopdf.util.EFormat;
  */
 public final class TxtConverter extends SimpleFileConverter {
 
+	/**
+	 * This constructor should not be used directly. Only {@link ConverterFactory} is allowed to use it.
+	 * @param skipValidation Indicates that validation should not be performed
+	 */
+	public TxtConverter(boolean skipValidation) {
+		super(skipValidation);
+	}
+	
 	/** {@inheritDoc} */
 	public EFormat getFormat() {
 		return EFormat.TXT;
 	}
-
+	
 	/** {@inheritDoc} */
-	public byte[] convert() throws PdfConverterException, FileValidationException {
+	public void convert() throws PdfConverterException, FileValidationException {
 
 		Document document = null;
 		BufferedReader reader = null;
-		ByteArrayOutputStream out = null;
 		File tempFileTXT = null;
 
 		try {
@@ -46,8 +53,6 @@ public final class TxtConverter extends SimpleFileConverter {
 			if (!isValidated()) {
 				throw new FileValidationException("The file has not been validated.");
 			}
-
-			out = new ByteArrayOutputStream();
 
 			document = new Document();
 
@@ -61,26 +66,24 @@ public final class TxtConverter extends SimpleFileConverter {
 
 			document.open();
 
-			if (file != null) {
-
-				reader = new BufferedReader(new FileReader(file));
-			} else {
+			if (bytesFileSource != null) {
 
 				tempFileTXT = File.createTempFile(UUID.randomUUID().toString(), getFormat().getExtension());
-				Files.write(tempFileTXT.toPath(), bytesFile, StandardOpenOption.WRITE);
-
+				Files.write(tempFileTXT.toPath(), bytesFileSource, StandardOpenOption.WRITE);
+				
 				reader = new BufferedReader(new FileReader(tempFileTXT));
-			}
+				createPdf(document, reader);
+			} else {
 
-			String line;
-			while ((line = reader.readLine()) != null) {
-				Paragraph paragraph = new Paragraph(line);
-				document.add(paragraph);
+				for (File eachFile : file) {
+					
+					reader = new BufferedReader(new FileReader(eachFile));
+					createPdf(document, reader);
+				}
 			}
 
 			document.close();
 			out.flush();
-			return out.toByteArray();
 
 		} catch (IOException e) {
 			throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);
@@ -93,6 +96,7 @@ public final class TxtConverter extends SimpleFileConverter {
 				if (out != null) {
 					out.close();
 				}
+				
 				if (reader != null) {
 					reader.close();
 				}
@@ -102,10 +106,29 @@ public final class TxtConverter extends SimpleFileConverter {
 
 				FileUtils.deleteQuietly(tempFileTXT);
 
+				System.gc();
+				
 			} catch (IOException e) {
 				throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);
 			}
 		}
 	}
 
+	/**
+	 * Create the PDF.
+	 * 
+	 * @param document The Document which represents the new PDF 
+	 * @param reader Reader to source file
+	 * @throws DocumentException {@link DocumentException}
+	 * @throws IOException {@link IOException}
+	 */
+	private void createPdf(Document document, BufferedReader reader) throws IOException, DocumentException {
+		
+		String line;
+		while ((line = reader.readLine()) != null) {
+			Paragraph paragraph = new Paragraph(line);
+			document.add(paragraph);
+		}
+	}
+	
 }

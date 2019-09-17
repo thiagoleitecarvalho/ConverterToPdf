@@ -1,10 +1,8 @@
 package org.convertertopdf.convert.implementation;
 
-import com.lowagie.text.DocumentException;
-
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -15,11 +13,15 @@ import org.convertertopdf.configuration.Configuration;
 import org.convertertopdf.convert.AbstractConverter;
 import org.convertertopdf.exception.FileValidationException;
 import org.convertertopdf.exception.PdfConverterException;
+import org.convertertopdf.management.ConverterFactory;
 import org.convertertopdf.util.EFormat;
+import org.w3c.dom.Document;
 import org.w3c.tidy.Tidy;
 import org.xhtmlrenderer.layout.SharedContext;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import org.xhtmlrenderer.util.XRRuntimeException;
+
+import com.lowagie.text.DocumentException;
 
 /**
  * Class responsable to convert HTML/XHTML files to PDF.
@@ -27,11 +29,19 @@ import org.xhtmlrenderer.util.XRRuntimeException;
  * @author Thiago Leite e-mail: thiagoleiteecarvalho@gmail.com
  */
 public final class HtmlConverter extends AbstractConverter {
-
+	
+	/**
+	 * This constructor should not be used directly. Only {@link ConverterFactory} is allowed to use it.
+	 * @param skipValidation Indicates that validation should not be performed
+	 */
+	public HtmlConverter(boolean skipValidation) {
+		super(skipValidation);
+	}
+	
 	/** {@inheritDoc} */
 	@Override
 	public AbstractConverter setConfigurations(Configuration configurations) {
-		throw new UnsupportedOperationException("HtmlConverter doesn't support settings.");
+		throw new UnsupportedOperationException("HtmlConverter doesn't support settings yet.");
 	}
 
 	/** {@inheritDoc} */
@@ -42,14 +52,8 @@ public final class HtmlConverter extends AbstractConverter {
 
 	/** {@inheritDoc} */
 	@Override
-	public byte[] convert() throws PdfConverterException, FileValidationException {
+	public void convert() throws PdfConverterException, FileValidationException {
 
-		org.w3c.dom.Document document = null;
-		ITextRenderer pdfRenderer = null;
-		SharedContext sharedContext = null;
-		ByteArrayOutputStream byteArray = null;
-		Tidy tidy = null;
-		FileInputStream fileStream = null;
 		File tempFileHTML = null;
 
 		try {
@@ -58,35 +62,55 @@ public final class HtmlConverter extends AbstractConverter {
 				throw new FileValidationException("The file has not been validated.");
 			}
 
-			if (file != null) {
-
-				fileStream = new FileInputStream(file);
-			} else {
-
-				tempFileHTML = File.createTempFile(UUID.randomUUID().toString(), EFormat.HTML.getExtension());
-				Files.write(tempFileHTML.toPath(), bytesFile, StandardOpenOption.WRITE);
-
-				fileStream = new FileInputStream(tempFileHTML);
-			}
-
-			tidy = new Tidy();
-			tidy.setQuiet(true);
-			tidy.setShowWarnings(false);
-			document = tidy.parseDOM(fileStream, null);
-
-			pdfRenderer = new ITextRenderer();
-			sharedContext = pdfRenderer.getSharedContext();
+			ITextRenderer pdfRenderer = new ITextRenderer();
+			SharedContext sharedContext = pdfRenderer.getSharedContext();
 			sharedContext.setPrint(true);
 			sharedContext.setInteractive(false);
 			sharedContext.getTextRenderer().setSmoothingThreshold(0);
-			pdfRenderer.setDocument(document, null);
+			
+			Tidy tidy = new Tidy();
+			tidy.setQuiet(true);
+			tidy.setShowWarnings(false);
+			
+			if (bytesFileSource != null) {
 
-			pdfRenderer.layout();
+				tempFileHTML = File.createTempFile(UUID.randomUUID().toString(), getFormat().getExtension());
+				Files.write(tempFileHTML.toPath(), bytesFileSource, StandardOpenOption.WRITE);
+				
+				Document document = tidy.parseDOM(new BufferedReader(new FileReader(tempFileHTML)), null);
 
-			byteArray = new ByteArrayOutputStream();
-			pdfRenderer.createPDF(byteArray);
+				pdfRenderer.setDocument(document, null);
 
-			return byteArray.toByteArray();
+				pdfRenderer.layout();
+
+				pdfRenderer.createPDF(out);
+				pdfRenderer.finishPDF();				
+			} else {
+
+				Document document = null;
+				for (int i = 0; i < file.length; i++) {
+										
+					if (i == 0) {
+						
+						document = tidy.parseDOM(new BufferedReader(new FileReader(file[i])), null);
+
+						pdfRenderer.setDocument(document, null);
+						pdfRenderer.layout();
+						
+						pdfRenderer.createPDF(out, false);
+					} else {
+						
+						document = tidy.parseDOM(new BufferedReader(new FileReader(file[i])), null);
+
+						pdfRenderer.setDocument(document, null);
+						pdfRenderer.layout();
+						pdfRenderer.writeNextDocument();
+					}
+				}
+				
+				pdfRenderer.finishPDF();
+				out.flush();
+			}
 
 		} catch (XRRuntimeException e) {
 			throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);
@@ -97,20 +121,18 @@ public final class HtmlConverter extends AbstractConverter {
 		} finally {
 			try {
 
-				if (byteArray != null) {
-					byteArray.close();
+				if (out != null) {
+					out.close();
 				}
-
-				if (fileStream != null) {
-					fileStream.close();
-				}
-
+				
 				FileUtils.deleteQuietly(tempFileHTML);
 
+				System.gc();
+				
 			} catch (IOException e) {
 				throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);
 			}
 		}
 	}
-
+	
 }

@@ -18,7 +18,7 @@ public final class FileValidator {
 	/**
 	 * Validates the format of file with the file passed.
 	 * 
-	 * @param file   File to detect the format.
+	 * @param file File to detect the format.
 	 * @param format The format to be checked in the file
 	 * @throws FileFormatException     {@link FileFormatException}
 	 * @throws FileValidationException {@link FileValidationException}
@@ -27,9 +27,7 @@ public final class FileValidator {
 
 		try {
 
-			String mineType = FormatUtils.checkFormat(file);
-
-			EFormat eFormat = EFormat.fromMineType(mineType);
+			EFormat eFormat = FormatUtils.getType(file);
 
 			if (!format.equals(eFormat))
 				throw new FileFormatException("The file format is different from the converter.");
@@ -51,9 +49,7 @@ public final class FileValidator {
 	 */
 	public static void checkFormatFile(byte[] bytesFile, EFormat format) throws FileFormatException {
 
-		String mineType = FormatUtils.checkFormat(bytesFile);
-
-		EFormat eFormat = EFormat.fromMineType(mineType);
+		EFormat eFormat = FormatUtils.getType(bytesFile);
 
 		if (!format.equals(eFormat))
 			throw new FileFormatException("The file format is different from the converter.");

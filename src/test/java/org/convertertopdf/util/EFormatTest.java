@@ -1,6 +1,10 @@
 package org.convertertopdf.util;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -96,4 +100,38 @@ public class EFormatTest {
 		assertEquals(EFormat.TIFF, EFormat.fromString("tIFf"));
 	}
 
+	@Test
+	public void imagesFormats() {
+
+		
+		List<EFormat> imageFormats = new ArrayList<EFormat>();
+		imageFormats.add(EFormat.GIF);
+		imageFormats.add(EFormat.BMP);
+		imageFormats.add(EFormat.PNG);
+		imageFormats.add(EFormat.JPEG);
+		imageFormats.add(EFormat.TIFF);
+		
+		assertArrayEquals(EFormat.getImagesType().toArray(), imageFormats.toArray());
+	}
+	
+	@Test
+	public void officesFormats() {
+
+		
+		List<EFormat> officeFormats = new ArrayList<EFormat>();
+		officeFormats.add(EFormat.DOC);
+		officeFormats.add(EFormat.DOCX);
+		officeFormats.add(EFormat.XLS);
+		officeFormats.add(EFormat.XLSX);
+		officeFormats.add(EFormat.PPT);
+		officeFormats.add(EFormat.PPTX);
+		officeFormats.add(EFormat.ODS);
+		officeFormats.add(EFormat.ODP);
+		officeFormats.add(EFormat.SXW);
+		officeFormats.add(EFormat.SXC);
+		officeFormats.add(EFormat.SXI);
+		officeFormats.add(EFormat.RTF);
+		
+		assertArrayEquals(EFormat.getOfficesType().toArray(), officeFormats.toArray());
+	}	
 }

@@ -10,6 +10,14 @@ import org.convertertopdf.configuration.implementation.TxtImageConfiguration;
  */
 public abstract class SimpleFileConverter extends AbstractConverter {
 
+	/**
+	 * Constructor.
+	 * @param skipValidation Indicates that validation should not be performed
+	 */
+	protected SimpleFileConverter(boolean skipValidation) {
+		super(skipValidation);
+	}
+	
 	public TxtImageConfiguration getConfigurations() {
 
 		if (configurations == null) {

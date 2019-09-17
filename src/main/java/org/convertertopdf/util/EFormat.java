@@ -1,6 +1,8 @@
 package org.convertertopdf.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,6 +13,8 @@ import java.util.List;
  */
 public enum EFormat {
 
+	PDF(".pdf", "application/pdf"),
+	
 	TXT(".txt", "text/plain"),
 
 	DOC(".doc", "application/msword"),
@@ -43,7 +47,7 @@ public enum EFormat {
 	 * Format used to .html and .xhtml.
 	 */
 	HTML(".html", "text/html"),
-
+	
 	GIF(".gif", "image/gif"),
 
 	BMP(".bmp", "image/x-ms-bmp"),
@@ -54,12 +58,12 @@ public enum EFormat {
 	 * Format used to .jpg and .jpeg.
 	 */
 	JPEG(".jpeg", "image/jpeg"),
-
+	
 	/**
 	 * Format used to .tif and .tiff.
 	 */
 	TIFF(".tiff", "image/tiff");
-
+	
 	/**
 	 * Extensions of format.
 	 */
@@ -139,4 +143,45 @@ public enum EFormat {
 
 		throw new IllegalArgumentException("Unable to determine format by reported String");
 	}
+	
+	/**
+	 * Returns an unmodifiable list of images formats.
+	 * 
+	 * @return List of images
+	 */
+	public static List<EFormat> getImagesType() {
+	
+		List<EFormat> imageFormats = new ArrayList<EFormat>();
+		imageFormats.add(GIF);
+		imageFormats.add(BMP);
+		imageFormats.add(PNG);
+		imageFormats.add(JPEG);
+		imageFormats.add(TIFF);
+		
+		return Collections.unmodifiableList(imageFormats);
+	}
+	
+	/**
+	 * Returns an unmodifiable list of offices formats.
+	 * 
+	 * @return List of offices
+	 */
+	public static List<EFormat> getOfficesType() {
+	
+		List<EFormat> officeFormats = new ArrayList<EFormat>();
+		officeFormats.add(DOC);
+		officeFormats.add(DOCX);
+		officeFormats.add(XLS);
+		officeFormats.add(XLSX);
+		officeFormats.add(PPT);
+		officeFormats.add(PPTX);
+		officeFormats.add(ODS);
+		officeFormats.add(ODP);
+		officeFormats.add(SXW);
+		officeFormats.add(SXC);
+		officeFormats.add(SXI);
+		officeFormats.add(RTF);
+		
+		return Collections.unmodifiableList(officeFormats);
+	}	
 }

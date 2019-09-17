@@ -1,18 +1,18 @@
 package org.convertertopdf.convert;
 
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Image;
-import com.lowagie.text.pdf.PdfWriter;
-
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 
 import org.convertertopdf.exception.FileValidationException;
 import org.convertertopdf.exception.PdfConverterException;
+
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
+import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * Abstract class that is responsible for providing adictional operations to
@@ -21,7 +21,15 @@ import org.convertertopdf.exception.PdfConverterException;
  * @author Thiago Leite e-mail: thiagoleiteecarvalho@gmail.com
  */
 public abstract class ImageConverter extends SimpleFileConverter {
-
+	
+	/**
+	 * Constructor.
+	 * @param skipValidation Indicates that validation should not be performed
+	 */
+	protected ImageConverter(boolean skipValidation) {
+		super(skipValidation);
+	}
+	
 	/**
 	 * Bytes of image to convert.
 	 */
@@ -73,10 +81,8 @@ public abstract class ImageConverter extends SimpleFileConverter {
 
 	/** {@inheritDoc} */
 	@Override
-	public byte[] convert() throws PdfConverterException, FileValidationException {
+	public void convert() throws PdfConverterException, FileValidationException {
 
-		ByteArrayOutputStream out = null;
-		Image image = null;
 		Document document = null;
 		PdfWriter pdf = null;
 
@@ -86,42 +92,25 @@ public abstract class ImageConverter extends SimpleFileConverter {
 				throw new FileValidationException("The file has not been validated.");
 			}
 
-			if (file != null) {
+			document = new Document();
+			pdf = PdfWriter.getInstance(document, out);
+			document.open();
+			
+			if (bytesFileSource != null) {
 
-				bytes = Files.readAllBytes(file.toPath());
+				bytes = bytesFileSource;				
+				createPdf(document, pdf);
 			} else {
 
-				bytes = bytesFile;
+				for(File eachFile : file) {
+					bytes = Files.readAllBytes(eachFile.toPath());
+					createPdf(document, pdf);
+				}
 			}
 
-			out = new ByteArrayOutputStream();
-
-			document = new Document();
-			document.setMargins(5.0f, 5.0f, 5.0f, 5.0f);
-
-			document.setPageSize(getConfigurations().getPageSize());
-
-			if (!getConfigurations().isPortrait()) {
-				document.setPageSize(document.getPageSize().rotate());
-			}
-
-			pdf = PdfWriter.getInstance(document, out);
-			pdf.setStrictImageSequence(true);
-
-			image = getImage();
-
-			if (isImageOverflowPage(image)) {
-				image.scaleToFit(adjustWidth(), adjustHeight());
-			}
-
-			document.open();
-			document.add(image);
 			document.close();
-
 			out.flush();
 			pdf.close();
-
-			return out.toByteArray();
 
 		} catch (BadElementException e) {
 			throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);
@@ -132,6 +121,7 @@ public abstract class ImageConverter extends SimpleFileConverter {
 		} catch (DocumentException e) {
 			throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);
 		} finally {
+			
 			try {
 				if (out != null) {
 					out.close();
@@ -143,9 +133,45 @@ public abstract class ImageConverter extends SimpleFileConverter {
 				if (pdf != null) {
 					pdf.close();
 				}
+				
+				System.gc();
+				
 			} catch (IOException e) {
 				throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);
 			}
 		}
+	}
+
+	/**
+	 * Create the PDF.
+	 * 
+	 * @param document The Document which represents the new PDF 
+	 * @param pdfPdfWrite to create the PDF
+	 * @throws DocumentException {@link DocumentException}
+	 * @throws MalformedURLException {@link MalformedURLException}
+	 * @throws IOException {@link IOException}
+	 */
+	private void createPdf(Document document, PdfWriter pdf) throws DocumentException, MalformedURLException, IOException {
+		
+		Image image = null;
+		
+		document.setMargins(5.0f, 5.0f, 5.0f, 5.0f);
+
+		document.setPageSize(getConfigurations().getPageSize());
+
+		if (!getConfigurations().isPortrait()) {
+			document.setPageSize(document.getPageSize().rotate());
+		}
+
+		pdf.setStrictImageSequence(true);
+
+		image = getImage();
+
+		if (isImageOverflowPage(image)) {
+			image.scaleToFit(adjustWidth(), adjustHeight());
+		}
+
+		document.newPage();
+		document.add(image);
 	}
 }

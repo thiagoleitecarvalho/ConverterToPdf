@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.convertertopdf.convert.AbstractConverter;
+import org.convertertopdf.convert.implementation.GenericConverter;
 import org.convertertopdf.util.EFormat;
 
 /**
@@ -11,17 +12,12 @@ import org.convertertopdf.util.EFormat;
  * 
  * @author Thiago Leite e-mail: thiagoleiteecarvalho@gmail.com
  */
-public class ConverterManager {
-
-	/**
-	 * Converter which the manager will provide.
-	 */
-	private AbstractConverter converter;
+public final class ConverterManager {
 
 	/**
 	 * Constructor.
 	 */
-	public ConverterManager() {
+	private ConverterManager() {
 	}
 
 	/**
@@ -30,10 +26,10 @@ public class ConverterManager {
 	 * @param format The format to create the converter
 	 * @return The appropriate converter for the format
 	 */
-	public AbstractConverter createFor(String format) {
+	public static AbstractConverter createConverterFor(String format) {
 
 		EFormat eFormat = EFormat.fromString(format);
-		return createFor(eFormat);
+		return createConverterFor(eFormat);
 	}
 
 	/**
@@ -42,28 +38,27 @@ public class ConverterManager {
 	 * @param format The format to create the converter
 	 * @return The appropriate converter for the format
 	 */
-	public AbstractConverter createFor(EFormat format) {
-
-		this.converter = new ConverterFactory(format).getConverter();
-		return converter;
+	public static AbstractConverter createConverterFor(EFormat format) {
+		return new ConverterFactory(format).getConverter();
 	}
 
+	/**
+	 * Provides the generic converter. See {@link GenericConverter}.
+	 * 
+	 * @return {@link GenericConverter}
+	 */
+	public static GenericConverter createGenericConverter() {
+		return new GenericConverter();
+	}
+	
+	
 	/**
 	 * Returns the available formats of ConverterToPdf.
 	 * 
 	 * @return The available formats
 	 */
-	public List<EFormat> getAvaliableFormats() {
+	public static List<EFormat> getAvaliableFormats() {
 		return Arrays.asList(EFormat.values());
-	}
-
-	/**
-	 * Returns the current converter.
-	 * 
-	 * @return Current converter
-	 */
-	public AbstractConverter getConverter() {
-		return converter;
 	}
 
 }

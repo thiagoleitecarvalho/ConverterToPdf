@@ -5,8 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.thiagoleitecarvalho</groupId>
 	<artifactId>convertertopdf</artifactId>
-	<version>1.0.0</version>
-    <packaging>jar</packaging>	
+	<version>2.3.1</version>
+	<packaging>jar</packaging>
 	<build>
 		<plugins>
 			<plugin>
@@ -45,11 +45,11 @@
 						</goals>
 					</execution>
 				</executions>
-			    <configuration>
-			        <excludes>
-			            <exclude>**/*Test</exclude>
-			        </excludes>
-			    </configuration>				
+				<configuration>
+					<excludes>
+						<exclude>**/*Test</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -175,14 +175,6 @@
 				<exclusion>
 					<artifactId>sis-netcdf</artifactId>
 					<groupId>org.apache.sis.storage</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>bcprov-jdk15on</artifactId>
-					<groupId>org.bouncycastle</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>bcmail-jdk15on</artifactId>
-					<groupId>org.bouncycastle</groupId>
 				</exclusion>
 				<exclusion>
 					<artifactId>guava</artifactId>
@@ -314,8 +306,16 @@
 			<version>2.1.7</version>
 			<exclusions>
 				<exclusion>
-					<groupId>org.bouncycastle</groupId>
+					<groupId>bouncycastle</groupId>
 					<artifactId>bctsp-jdk14</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>bouncycastle</groupId>
+					<artifactId>bcmail-jdk14</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>bouncycastle</groupId>
+					<artifactId>bcprov-jdk14</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -376,6 +376,18 @@
 				<exclusion>
 					<groupId>com.lowagie</groupId>
 					<artifactId>itext</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bctsp-jdk14</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcmail-jdk14</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcprov-jdk14</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>

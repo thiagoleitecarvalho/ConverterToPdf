@@ -7,7 +7,7 @@ import org.convertertopdf.util.EOrientation;
 import org.convertertopdf.util.EPageSize;
 
 /**
- * Utility class for optional settings when converting TXT and Images (GIF, BMP,
+ * Utility class for optional settings when converting PDF, TXT and Images (GIF, BMP,
  * PNG, JPEG, TIFF) to PDF.
  * 
  * @author Thiago Leite e-mail: thiagoleiteecarvalho@gmail.com

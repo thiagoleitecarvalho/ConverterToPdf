@@ -1,6 +1,7 @@
 package org.convertertopdf.convert;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -11,6 +12,12 @@ import org.convertertopdf.configuration.Configuration;
 import org.convertertopdf.exception.FileValidationException;
 import org.convertertopdf.exception.PdfConverterException;
 import org.jodconverter.JodConverter;
+import org.jodconverter.LocalConverter;
+import org.jodconverter.LocalConverter.Builder;
+import org.jodconverter.document.DefaultDocumentFormatRegistry;
+import org.jodconverter.document.DocumentFormat;
+import org.jodconverter.filter.Filter;
+import org.jodconverter.filter.text.DocumentInserterFilter;
 import org.jodconverter.office.LocalOfficeManager;
 import org.jodconverter.office.OfficeException;
 import org.jodconverter.office.OfficeUtils;
@@ -22,19 +29,33 @@ import org.jodconverter.office.OfficeUtils;
  * @author Thiago Leite e-mail: thiagoleiteecarvalho@gmail.com
  */
 public abstract class OfficeConverter extends AbstractConverter {
-
+	
+	/**
+	 * Constructor.
+	 * @param skipValidation Indicates that validation should not be performed
+	 */
+	protected OfficeConverter(boolean skipValidation) {
+		super(skipValidation);
+	}
+	
+	/**
+	 * Returns the {@link DocumentFormat} to source file.
+	 *  
+	 * @return DocumentFormat {@link DocumentFormat}
+	 */
+	protected abstract DocumentFormat getDocumentFormat();
+	
 	/** {@inheritDoc} */
 	@Override
 	public AbstractConverter setConfigurations(Configuration configurations) {
 		throw new UnsupportedOperationException("OfficeConverter doesn't support settings yet.");
 	}
-
+	
 	/** {@inheritDoc} */
-	public byte[] convert() throws FileValidationException, PdfConverterException {
+	public void convert() throws FileValidationException, PdfConverterException {
 
 		final LocalOfficeManager officeManager = LocalOfficeManager.install();
 		File tempFileWord = null;
-		File tempFilePDF = null;
 
 		try {
 
@@ -42,42 +63,55 @@ public abstract class OfficeConverter extends AbstractConverter {
 				throw new FileValidationException("The file has not been validated.");
 			}
 
-			// doc/docx temp
-			tempFileWord = File.createTempFile(UUID.randomUUID().toString(), getFormat().getExtension());
-
-			byte[] bytes = null;
-
-			if (file != null) {
-
-				bytes = Files.readAllBytes(file.toPath());
-			} else {
-				bytes = bytesFile;
-			}
-
-			Files.write(tempFileWord.toPath(), bytes, StandardOpenOption.WRITE);
-
-			// pdf temp
-			tempFilePDF = File.createTempFile(UUID.randomUUID().toString(), ".pdf");
-
 			officeManager.start();
+			
+			if (bytesFileSource != null) {
 
-			JodConverter.convert(tempFileWord).to(tempFilePDF).execute();
-
-			return Files.readAllBytes(tempFilePDF.toPath());
+				// doc/docx temp
+				tempFileWord = File.createTempFile(UUID.randomUUID().toString(), getFormat().getExtension());
+				Files.write(tempFileWord.toPath(), bytesFileSource, StandardOpenOption.WRITE);
+				
+				JodConverter.convert(new FileInputStream(tempFileWord)).as(getDocumentFormat()).to(out, true).as(DefaultDocumentFormatRegistry.PDF).execute();
+			} else {
+				
+				if (file.length == 1) {
+					
+					LocalConverter.builder().build().convert(new FileInputStream(file[0])).as(getDocumentFormat()).to(out).as(DefaultDocumentFormatRegistry.PDF).execute();
+				} else {
+					
+					Builder builder = LocalConverter.builder();
+					Filter[] filters = new DocumentInserterFilter[file.length - 1];
+					for (int i = 0; i < file.length - 1; i++) {
+						
+						filters[i] = new DocumentInserterFilter(file[i]);
+					}
+					builder.filterChain(filters).build().convert(new FileInputStream(file[file.length - 1])).as(getDocumentFormat()).to(out, false).as(DefaultDocumentFormatRegistry.PDF).execute();
+				}
+			}
 		} catch (IOException e) {
 			throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);
 		} catch (OfficeException e) {
 			throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);
 		} finally {
 
-			FileUtils.deleteQuietly(tempFilePDF);
 			FileUtils.deleteQuietly(tempFileWord);
-
-			if (officeManager.isRunning()) {
-				OfficeUtils.stopQuietly(officeManager);
+			
+			try {
+				
+				if (officeManager.isRunning()) {
+					OfficeUtils.stopQuietly(officeManager);
+				}
+			
+				if (out != null) {
+					out.close();
+				}
+				
+				System.gc();
+				
+			} catch (IOException e) {
+				throw new PdfConverterException(PdfConverterException.formatMessage(getFormat()), e);				
 			}
 
 		}
-	}
-
+	}	
 }
